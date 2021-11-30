@@ -14,6 +14,7 @@ import edu.fatec.RevisaoAutomotiva.exception.CarroNotFoundException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteCadastradoException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteNotFoundException;
 import edu.fatec.RevisaoAutomotiva.exception.RevisaoNotFoundException;
+import edu.fatec.RevisaoAutomotiva.exception.ServicoCadastradoException;
 
 /**
  * Classe responsável pelo tratamento de erros
@@ -31,6 +32,13 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler(ClienteCadastradoException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleClienteCadastradoException(ClienteCadastradoException ex){
+        String mensagem = ex.getMessage();
+        return new ApiErrors(mensagem);
+    } 
+
+    @ExceptionHandler(ServicoCadastradoException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleServicoCadastradoException(ServicoCadastradoException ex){
         String mensagem = ex.getMessage();
         return new ApiErrors(mensagem);
     } 

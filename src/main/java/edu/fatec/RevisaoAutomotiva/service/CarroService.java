@@ -1,6 +1,9 @@
 package edu.fatec.RevisaoAutomotiva.service;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,26 @@ public class CarroService {
         }, ()-> {
             throw new CarroNotFoundException("Carro não encontrado.");
         });
+    }
+
+    public Map<String,Integer> relatorioServico(Integer codCarro){
+        Map<String,Integer> qdtServicos = new HashMap<String,Integer>();
+        carroRepository.findById(codCarro).ifPresentOrElse((carro) -> {
+            carro.getRevisoes().forEach(revisao -> {
+                revisao.getServicos().forEach(servico -> {
+                    String descricao = servico.getDescricao();
+                    if(qdtServicos.containsKey(descricao)){
+                        Integer qtd = qdtServicos.get(descricao)+1;
+                        qdtServicos.put(descricao, qtd);
+                    } else {
+                        qdtServicos.put(descricao, 1);
+                    }
+                });
+            });
+        }, () -> {
+            throw new CarroNotFoundException("Carro não encontrado.");
+        });
+        return qdtServicos;
     }
 
 }

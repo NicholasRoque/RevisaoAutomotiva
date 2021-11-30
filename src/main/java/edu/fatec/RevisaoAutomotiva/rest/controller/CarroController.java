@@ -1,6 +1,7 @@
 package edu.fatec.RevisaoAutomotiva.rest.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +51,18 @@ public class CarroController {
         try {
             carroService.addRevisao(revisaoDTO,codCarro);
         } catch (ClienteNotFoundException e) {
+            throw new CarroNotFoundException(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{codCarro}/relatorio")
+    @ApiOperation(value = "Retorna um relatorio com a quantidade de servicos de determinado veiculo.")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(code = 200,message = "Clientes retornados com sucesso.")
+    public Map<String,Integer> relatorioServico(@PathVariable Integer codCarro) throws CarroNotFoundException{
+        try {
+            return carroService.relatorioServico(codCarro);
+        } catch (CarroNotFoundException e) {
             throw new CarroNotFoundException(e.getMessage());
         }
     }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import edu.fatec.RevisaoAutomotiva.exception.RevisaoNotFoundException;
 import edu.fatec.RevisaoAutomotiva.rest.dto.RevisaoDTO;
+import edu.fatec.RevisaoAutomotiva.rest.dto.ServicoDTO;
 import edu.fatec.RevisaoAutomotiva.service.RevisaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,7 @@ public class RevisaoController {
     @ApiOperation(value = "Muda a data de uma revisão.")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses({
-        @ApiResponse(code = 201,message = "Data da revisão alterada com sucesso."),
+        @ApiResponse(code = 200,message = "Data da revisão alterada com sucesso."),
         @ApiResponse(code = 404,message = "Revisão não encontrada."),
         @ApiResponse(code = 400,message = "Informações incorretas.")
     })
@@ -57,13 +58,30 @@ public class RevisaoController {
     @ApiOperation(value = "Cancela uma revisão.")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses({
-        @ApiResponse(code = 201,message = "Revisão removida com sucesso."),
+        @ApiResponse(code = 200,message = "Revisão removida com sucesso."),
         @ApiResponse(code = 404,message = "Revisão não encontrada."),
         @ApiResponse(code = 400,message = "Informações incorretas.")
     })
     public void removeRevisao(@PathVariable Integer codRevisao) throws RevisaoNotFoundException{
         try {
             revisaoService.removeRevisao(codRevisao);
+        } catch (RevisaoNotFoundException e) {
+            throw new RevisaoNotFoundException(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{codRevisao}/servicos/add")
+    @Transactional
+    @ApiOperation(value = "Adiciona serviços a uma revisão.")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponses({
+        @ApiResponse(code = 200,message = "Serviços adicionados com sucesso."),
+        @ApiResponse(code = 404,message = "Revisão não encontrada."),
+        @ApiResponse(code = 400,message = "Informações incorretas.")
+    })
+    public void addServico(@RequestBody List<Integer> listCodServico,@PathVariable Integer codRevisao) throws RevisaoNotFoundException{
+        try {
+            revisaoService.addServico(listCodServico,codRevisao);
         } catch (RevisaoNotFoundException e) {
             throw new RevisaoNotFoundException(e.getMessage());
         }

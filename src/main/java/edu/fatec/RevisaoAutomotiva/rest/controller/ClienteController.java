@@ -75,7 +75,7 @@ public class ClienteController {
     @GetMapping
     @ApiOperation(value = "Lista todos os clientes.")
     @ResponseStatus(HttpStatus.OK)
-    @ApiResponse(code = 201,message = "Clientes retornados com sucesso.")
+    @ApiResponse(code = 200,message = "Clientes retornados com sucesso.")
     public List<Cliente> listClientes(){
         return clienteService.listClientes();
     }
