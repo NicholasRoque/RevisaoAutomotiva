@@ -1,6 +1,8 @@
 package edu.fatec.RevisaoAutomotiva.domain.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -32,4 +34,17 @@ public class Revisao {
     @ManyToOne
     @JoinColumn(name="codCarro")
     private Carro carro;
+
+    @ManyToMany
+    @JoinTable(
+        name = "revisao_servicos", 
+        joinColumns = @JoinColumn(name = "codRevisao"), 
+        inverseJoinColumns = @JoinColumn(name = "codServico")
+    )
+    private List<Servico> servicos;
+
+    public void removeServico(Servico servico){
+        this.servicos.remove(servico);
+        servico.getRevisoes().remove(this);
+    } 
 }

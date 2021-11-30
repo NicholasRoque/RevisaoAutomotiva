@@ -13,6 +13,7 @@ import edu.fatec.RevisaoAutomotiva.ApiErrors;
 import edu.fatec.RevisaoAutomotiva.exception.CarroNotFoundException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteCadastradoException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteNotFoundException;
+import edu.fatec.RevisaoAutomotiva.exception.RevisaoNotFoundException;
 
 /**
  * Classe responsável pelo tratamento de erros
@@ -47,6 +48,14 @@ public class ApplicationControllerAdvice {
         String mensagem = ex.getMessage();
         return new ApiErrors(mensagem);
     } 
+
+    @ExceptionHandler(RevisaoNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleRevisaoNotFoundException(RevisaoNotFoundException ex){
+        String mensagem = ex.getMessage();
+        return new ApiErrors(mensagem);
+    } 
+
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
