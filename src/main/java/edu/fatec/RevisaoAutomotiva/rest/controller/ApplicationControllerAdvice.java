@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import edu.fatec.RevisaoAutomotiva.ApiErrors;
+import edu.fatec.RevisaoAutomotiva.exception.CarroNotFoundException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteCadastradoException;
+import edu.fatec.RevisaoAutomotiva.exception.ClienteNotFoundException;
 
 /**
  * Classe responsável pelo tratamento de erros
@@ -32,6 +34,20 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(mensagem);
     } 
 
+    @ExceptionHandler(ClienteNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleClienteNotFoundException(ClienteNotFoundException ex){
+        String mensagem = ex.getMessage();
+        return new ApiErrors(mensagem);
+    } 
+
+    @ExceptionHandler(CarroNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleCarroNotFoundException(CarroNotFoundException ex){
+        String mensagem = ex.getMessage();
+        return new ApiErrors(mensagem);
+    } 
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleMethodNotValidException(MethodArgumentNotValidException ex){
