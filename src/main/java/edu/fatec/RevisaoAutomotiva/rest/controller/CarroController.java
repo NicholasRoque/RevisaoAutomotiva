@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import edu.fatec.RevisaoAutomotiva.exception.CarroNotFoundException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteNotFoundException;
+import edu.fatec.RevisaoAutomotiva.rest.dto.RelatorioDTO;
 import edu.fatec.RevisaoAutomotiva.rest.dto.RevisaoDTO;
 import edu.fatec.RevisaoAutomotiva.service.CarroService;
 
@@ -59,7 +60,7 @@ public class CarroController {
     @ApiOperation(value = "Retorna um relatorio com a quantidade de servicos de determinado veiculo.")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(code = 200,message = "Clientes retornados com sucesso.")
-    public Map<String,Integer> relatorioServico(@PathVariable Integer codCarro) throws CarroNotFoundException{
+    public RelatorioDTO relatorioServico(@PathVariable Integer codCarro) throws CarroNotFoundException{
         try {
             return carroService.relatorioServico(codCarro);
         } catch (CarroNotFoundException e) {

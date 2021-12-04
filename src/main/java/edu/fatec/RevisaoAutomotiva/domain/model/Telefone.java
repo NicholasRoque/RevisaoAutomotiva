@@ -26,7 +26,7 @@ public class Telefone {
     private Integer numero;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="codCliente")
     private Cliente cliente;
 }

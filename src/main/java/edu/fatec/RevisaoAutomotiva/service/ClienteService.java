@@ -9,6 +9,7 @@ import edu.fatec.RevisaoAutomotiva.domain.model.Carro;
 import edu.fatec.RevisaoAutomotiva.domain.model.Cliente;
 import edu.fatec.RevisaoAutomotiva.domain.repository.CarroRepository;
 import edu.fatec.RevisaoAutomotiva.domain.repository.ClienteRepository;
+import edu.fatec.RevisaoAutomotiva.domain.repository.TelefoneRepository;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteCadastradoException;
 import edu.fatec.RevisaoAutomotiva.exception.ClienteNotFoundException;
 import edu.fatec.RevisaoAutomotiva.rest.dto.CarroDTO;
@@ -23,12 +24,26 @@ public class ClienteService {
     @Autowired
     private CarroRepository carroRepository;
 
+    @Autowired
+    private TelefoneRepository telefoneRepository;
 
     public void createCliente(ClienteDTO clienteDTO){
         clienteRepository.findByCpf(clienteDTO.getCpf()).ifPresentOrElse((cliente)->{
             throw new ClienteCadastradoException("Cliente já cadastrado.");
         }, ()->{
-            clienteRepository.save(clienteDTO.toCliente());
+            final Cliente cliente = clienteDTO.toCliente();
+            clienteDTO.toCliente().getTelefones().forEach(t ->{
+                t.setCliente(cliente);
+                telefoneRepository.save(t);
+            });
+            clienteDTO.toCliente().getCarros().forEach(c ->{
+                c.setCliente(cliente);
+                carroRepository.save(c);
+            });
+            System.out.println(cliente.toString());
+
+            clienteRepository.save(cliente);
+            
         });
     }
 
