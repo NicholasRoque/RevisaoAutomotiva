@@ -2,7 +2,7 @@ services:
   servidor:
     container_name: BackendRevisao
     build: 
-      context: ./
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080" 
